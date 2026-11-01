@@ -1,0 +1,95 @@
+
+@startchen
+
+' !pragma layout smetana
+' skinparam nodesep 15
+' skinparam ranksep 25
+<style>
+.pk {
+    FontColor DarkOrange
+    FontStyle bold
+}
+.fk {
+    FontColor Orange
+    FontStyle bold
+}
+.derived {
+    BackGroundColor LightYellow
+    LineColor DarkOrange
+    LineStyle dotted
+}
+.sensitive {
+    BackGroundColor LightPink
+    FontColor DarkRed
+    LineColor Red
+}
+.weak {
+    BackGroundColor LightCyan
+    LineColor Navy
+}
+.multivalued {
+    BackGroundColor LightGray
+    LineColor Gray
+}
+</style>
+
+' ==========================================
+' ENTITY
+' ==========================================
+
+entity CUSTOMER {
+    id      : bigint <<key>>
+    name    : string
+    address : string
+    phone   : string <<multi>>
+}
+
+entity RESTAURANT {
+    id         : bigint <<key>> <<pk>>
+    name       : string
+    address    : string
+    start_time : time
+    end_time   : time
+}
+
+entity ORDER {
+    id   : bigint <<key>> <<pk>>
+    code : string
+}
+entity DISH {
+    id   : bigint <<key>> <<pk>>
+    code : string
+}
+
+entity SHIPPER {
+    id               : bigint <<key>>
+    code             : string
+    start_at         : datetime
+    end_at           : datetime
+    from_place       : string
+    to_place         : string
+    current_position1 : string
+}
+
+' ==========================================
+' RELATIONSHIPS
+' ==========================================
+
+relationship PURCHASE {
+    payment : tinyint
+    status : bool
+}
+PURCHASE =1= CUSTOMER
+PURCHASE -N- ORDER
+
+relationship COOKING {
+}
+COOKING =1= RESTAURANT
+COOKING -N- ORDER
+
+relationship DELIVERY {
+}
+DELIVERY =1= ORDER
+DELIVERY -N- SHIPPER
+
+@endchen

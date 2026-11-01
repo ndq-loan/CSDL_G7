@@ -1,0 +1,45 @@
+' Composite and multivalued attributes can be nested to any number of levels. Suppose we want to design an attribute
+' for a STUDENT entity type to keep track of previous college education. Such an attribute will have one entry for each
+' college previously attended, and each such entry will be composed of college name, start and end dates, degree entries
+' (degrees awarded at that college, if any), and transcript entries (courses completed at that college, if any). Each
+' degree entry contains the degree name and the month and year the degree was awarded, and each transcript entry contains
+' a course name, semester, year, and grade. Design an attribute to hold this information. Use the conventions in Figure 3.5.
+@startchen
+entity COLLEGE {
+    college_name
+    start_date
+    end_date
+}
+
+entity DEGREE {
+    degree_name
+    month_award
+    year_award
+}
+
+entity TRANSCRIPT {
+    course_name
+    semeter
+    year
+    grad
+}
+relationship HAVE {
+}
+
+COLLEGE -1- HAVE
+HAVE -N- DEGREE
+HAVE -N- TRANSCRIPT
+
+entity STUDENT {
+    id
+    name
+}
+relationship STUDY {
+}
+relationship TEACH {
+}
+COLLEGE -1- TEACH
+TEACH -N- STUDENT
+STUDENT -1- STUDY
+STUDY -1- COLLEGE
+@endchen

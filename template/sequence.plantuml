@@ -1,0 +1,40 @@
+
+@startuml
+
+title LOGIN FLOW
+
+autonumber
+
+actor User
+boundary LoginPage
+control AuthController
+control AuthService
+database Database
+
+User -> LoginPage : Enter email/password
+User -> LoginPage : Click Login
+
+LoginPage -> AuthController : POST /login
+AuthController -> AuthService : authenticate()
+
+AuthService -> Database : Find user by email
+Database --> AuthService : User data
+
+alt User not found
+    AuthService --> AuthController : Authentication failed
+else Password invalid
+    AuthService --> AuthController : Authentication failed
+else Login success
+    AuthService -> AuthService : Create session/token
+    AuthService --> AuthController : Token / Session
+end
+
+AuthController --> LoginPage : HTTP Response
+
+alt Success
+    LoginPage --> User : Redirect to Dashboard
+else Failed
+    LoginPage --> User : Display error
+end
+
+@enduml
